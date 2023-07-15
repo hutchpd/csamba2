@@ -412,7 +412,10 @@ const loadEvents = async () => {
   try {
     const res = await fetch("https://data.accentapi.com/feed/158467.json?no_cache=20230624172558");
     const data = await res.json();
-    const events = data.events;
+    let events = data.events;
+
+    // Sort events in ascending order by start_timestamp
+    events.sort((a, b) => a.start_timestamp - b.start_timestamp);
 
     events.forEach(event => {
       const script = document.createElement('script');
