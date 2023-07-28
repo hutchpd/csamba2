@@ -410,7 +410,8 @@
 <script>
 const loadEvents = async () => {
   try {
-    const res = await fetch("https://data.accentapi.com/feed/158467.json?no_cache=20230624172558");
+    let no_cache = new Date().toISOString().replace(/[^0-9]/g, '');
+    const res = await fetch(`https://data.accentapi.com/feed/158467.json?no_cache=${no_cache}`);
     const data = await res.json();
     let events = data.events;
 
