@@ -413,7 +413,10 @@ const loadEvents = async () => {
     let no_cache = new Date().toISOString().replace(/[^0-9]/g, '');
     const res = await fetch(`https://data.accentapi.com/feed/158467.json?no_cache=${no_cache}`);
     const data = await res.json();
-    let events = data.events;
+    const currentTime = Math.floor(new Date().getTime() / 1000);
+
+    // Filter out past events
+    let events = data.events.filter(event => event.start_timestamp > currentTime);
 
     // Sort events in ascending order by start_timestamp
     events.sort((a, b) => a.start_timestamp - b.start_timestamp);
