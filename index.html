@@ -450,6 +450,24 @@ const loadEvents = async () => {
       document.querySelector('.grid.tm-gallery').insertAdjacentHTML('beforeend', eventHtml);
     });
 
+    // Add "Past Events" link
+    const pastEventsHtml = `
+      <a href="https://www.facebook.com/CelebrationSambaBand/past_hosted_events" class="past-events">
+        <figure class="effect-honey tm-gallery-item">
+          <img src="/img/infinite-loop-01.jpg" alt="Past Events" class="img-fluid">
+          <figcaption>
+            <h2>
+              <i>
+                <span>Past Events</span>
+              </i>
+            </h2>
+          </figcaption>
+        </figure>
+      </a>
+    `;
+
+        document.querySelector('.grid.tm-gallery').insertAdjacentHTML('beforeend', pastEventsHtml);
+
     // Gallery
     $('.tm-gallery').slick({
       dots: true,
