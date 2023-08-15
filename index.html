@@ -436,8 +436,7 @@ const loadEvents = async () => {
               <i>
                 ${new Date(event.start_timestamp * 1000).toLocaleDateString('en-GB', { weekday: 'long' })}
                 <br>
-                ${new Date(event.start_timestamp * 1000).toLocaleDateString('en-GB', { month: 'long', day: 'numeric' })}
-                | <br>
+                ${new Date(event.start_timestamp * 1000).toLocaleDateString('en-GB', { month: 'long', day: 'numeric' })} <br>
                 ${event.start_time}
                 <span>${event.name}</span>
               </i>
