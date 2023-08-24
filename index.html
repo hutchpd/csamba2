@@ -80,7 +80,7 @@
     <div class="container tm-container-gallery">
       <div class="row">
         <div class="text-center col-12">
-          <h2 class="tm-text-primary tm-section-title mb-4">Upcoming Events</h2>
+          <h2 class="tm-text-primary tm-section-title mb-4">Events</h2>
         </div>
       </div>
       <div class="row">
@@ -410,9 +410,16 @@
 <script>
 const loadEvents = async () => {
   try {
-    const res = await fetch("https://data.accentapi.com/feed/158467.json?no_cache=20230624172558");
+    let no_cache = new Date().toISOString().replace(/[^0-9]/g, '');
+    const res = await fetch(`https://data.accentapi.com/feed/158467.json?no_cache=${no_cache}`);
     const data = await res.json();
-    const events = data.events;
+    const currentTime = Math.floor(new Date().getTime() / 1000);
+
+    // Filter out past events
+    let events = data.events.filter(event => event.start_timestamp > currentTime);
+
+    // Sort events in ascending order by start_timestamp
+    events.sort((a, b) => a.start_timestamp - b.start_timestamp);
 
     events.forEach(event => {
       const script = document.createElement('script');
@@ -423,14 +430,13 @@ const loadEvents = async () => {
       const eventHtml = `
       <a href="${event.html_link}">
         <figure class="effect-honey tm-gallery-item">
-          <img src="${event.image}" alt="${event.name}" class="img-fluid">
+          <img src="https://images.sociablekit.com/images/facebook-events/${event.event_id}.jpg" alt="${event.name}" class="img-fluid">
           <figcaption>
             <h2>
               <i>
                 ${new Date(event.start_timestamp * 1000).toLocaleDateString('en-GB', { weekday: 'long' })}
                 <br>
-                ${new Date(event.start_timestamp * 1000).toLocaleDateString('en-GB', { month: 'long', day: 'numeric' })}
-                | <br>
+                ${new Date(event.start_timestamp * 1000).toLocaleDateString('en-GB', { month: 'long', day: 'numeric' })} <br>
                 ${event.start_time}
                 <span>${event.name}</span>
               </i>
@@ -442,6 +448,24 @@ const loadEvents = async () => {
 
       document.querySelector('.grid.tm-gallery').insertAdjacentHTML('beforeend', eventHtml);
     });
+
+    // Add "Past Events" link
+    const pastEventsHtml = `
+      <a href="https://www.facebook.com/CelebrationSambaBand/" class="past-events">
+        <figure class="effect-honey tm-gallery-item">
+          <img src="/img/infinite-loop-01.jpg" alt="Past Events" class="img-fluid">
+          <figcaption>
+            <h2>
+              <i>See all<br>
+                <span>Past   Events</span>
+              </i>
+            </h2>
+          </figcaption>
+        </figure>
+      </a>
+    `;
+
+        document.querySelector('.grid.tm-gallery').insertAdjacentHTML('beforeend', pastEventsHtml);
 
     // Gallery
     $('.tm-gallery').slick({
